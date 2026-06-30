@@ -64,6 +64,19 @@ h1 em { font-style: italic; color: var(--accent); }
   max-width: 380px;
 }
 
+.hero-solo {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-bottom: none;
+}
+
+.btn-hero {
+  margin-top: 2.5rem;
+  align-self: flex-start;
+}
+
 /* ── SECTION / GRID ── */
 .section {
   max-width: 1200px;
@@ -248,19 +261,15 @@ h1 em { font-style: italic; color: var(--accent); }
 </head>
 <body>
 
-<div class="hero">
+<div class="hero hero-solo">
   <span class="hero-eyebrow">Universidad Somnia &middot; Guadalajara</span>
-  <h1>Los personajes<br>de <em>EDEL</em></h1>
-  <p class="hero-sub">Catorce personas. Una campa&ntilde;a que existe entre el desvelo y el sue&ntilde;o latente.</p>
+  <h1>&iquest;Qu&eacute; personaje<br>de <em>EDEL</em> eres?</h1>
+  <p class="hero-sub">Diez preguntas. Sin respuestas correctas. Solo las tuyas. Descubre tu personaje y tu afinidad con el resto al final del test.</p>
+  <a class="btn btn-hero" href="edel-test.html">Empezar el test &rarr;</a>
 </div>
 
-<div class="section">
+<div class="section" id="gridSection" hidden>
   <div class="grid" id="grid"></div>
-</div>
-
-<div class="cta">
-  <span class="cta-text">&iquest;Con cu&aacute;l de ellos conectas m&aacute;s?</span>
-  <a class="btn" href="edel-test.html">Descubre qu&eacute; personaje eres &rarr;</a>
 </div>
 
 <script>
