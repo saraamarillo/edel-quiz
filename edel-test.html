@@ -324,6 +324,20 @@ h1 em { font-style: italic; color: var(--accent); }
   transition: width 1s ease;
   width: 0%;
 }
+.aff-bar-neg { background: var(--muted); opacity: .45; }
+
+.aff-label {
+  font-size: .6rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: .3rem;
+}
+.aff-card.negative .aff-label { color: var(--muted); }
+.aff-pct-neg { color: var(--muted) !important; font-size: 1.1rem !important; }
+.aff-card.negative { opacity: .7; }
+.aff-card.negative .aff-img img { filter: grayscale(55%); }
 
 .winner-badge {
   position: absolute;
@@ -392,287 +406,227 @@ const questions = [
   {
     text: "Aparece una amenaza que nadie esperaba. Tu primer movimiento es...",
     options: [
-      { text: "Ponerme delante. Si hay que aguantar el golpe, que sea yo.", chars: ["Ethan","Saphire","Lydia"] },
-      { text: "Observar. Necesito entender qué tengo delante antes de actuar.", chars: ["Ayla","Frey","Grace"] },
-      { text: "Improvisar con lo que tenga a mano. La parálisis mata.", chars: ["Maven","Leo","Dani"] },
-      { text: "Pasar desapercibido/a y no llamar la atención hasta saber qué pasa.", chars: ["Ryan","Noa","Lucas"] },
+      { text: "Ponerme delante. Si hay que aguantar el golpe, que sea yo.",
+        add: ["Ethan","Saphire","Lydia"], sub: ["Frey","Noa"] },
+      { text: "Observar. Necesito entender qué tengo delante antes de actuar.",
+        add: ["Ayla","Frey","Grace"], sub: ["Ethan"] },
+      { text: "Improvisar con lo que tenga a mano. La parálisis mata.",
+        add: ["Maven","Leo","Dani"], sub: ["Luna"] },
+      { text: "Pasar desapercibido/a hasta saber qué pasa exactamente.",
+        add: ["Ryan","Noa","Lucas"], sub: ["Ethan","Saphire"] },
     ]
   },
   {
     text: "En el trato del día a día, quien te conoce te describiría como...",
     options: [
-      { text: "Cercano/a. Me cuesta no ser cálido/a desde el primer momento.", chars: ["Estrella","Leo","Aurora"] },
-      { text: "Discreto/a. Estoy presente sin necesitar que nadie lo note.", chars: ["Frey","Noa","Ryan"] },
-      { text: "Reservado/a. La distancia no es frialdad, es cómo proceso.", chars: ["Luna","Xavier","Grace"] },
-      { text: "Directo/a, sin filtros. Para bien y para mal.", chars: ["Maven","Ethan","Saphire"] },
+      { text: "Cercano/a. Me cuesta no ser cálido/a desde el primer momento.",
+        add: ["Estrella","Leo","Aurora"], sub: ["Luna","Xavier"] },
+      { text: "Discreto/a. Estoy presente sin necesitar que nadie lo note.",
+        add: ["Frey","Noa","Ryan"], sub: ["Leo","Aurora"] },
+      { text: "Reservado/a. La distancia no es frialdad, es cómo proceso.",
+        add: ["Luna","Xavier","Grace"], sub: ["Estrella","Aurora"] },
+      { text: "Directo/a, sin filtros. Para bien y para mal.",
+        add: ["Maven","Ethan","Saphire"], sub: ["Frey","Noa"] },
     ]
   },
   {
     text: "Cuando algo sale mal por una decisión que tomaste...",
     options: [
-      { text: "Me lo cargo. Aunque no sea solo culpa mía, siento que podría haber hecho más.", chars: ["Soledad","Frey","Lydia"] },
-      { text: "Analizo qué falló para que no vuelva a pasar.", chars: ["Grace","Maven","Ayla"] },
-      { text: "Busco la salida más práctica. El lamento no construye nada.", chars: ["Luna","Ryan","Saphire"] },
-      { text: "Le quito peso. Si todo el mundo se hunde, alguien tiene que mantener la cabeza fría.", chars: ["Leo","Dani","Aurora"] },
+      { text: "Me lo cargo. Aunque no sea solo culpa mía, siento que podría haber hecho más.",
+        add: ["Soledad","Frey","Lydia"], sub: ["Leo","Dani"] },
+      { text: "Analizo qué falló para que no vuelva a pasar.",
+        add: ["Grace","Maven","Ayla"], sub: ["Soledad"] },
+      { text: "Busco la salida más práctica. El lamento no construye nada.",
+        add: ["Luna","Ryan","Saphire"], sub: ["Soledad","Lydia"] },
+      { text: "Le quito peso. Si todo el mundo se hunde, alguien tiene que mantener la cabeza fría.",
+        add: ["Leo","Dani","Aurora"], sub: ["Frey","Lydia"] },
     ]
   },
   {
     text: "En plena situación de caos, tu lugar natural es...",
     options: [
-      { text: "Tomar las decisiones que nadie más quiere tomar.", chars: ["Luna","Estrella","Grace"] },
-      { text: "Buscar el ángulo inesperado que los demás han ignorado.", chars: ["Xavier","Ona","Maven"] },
-      { text: "Sostener a alguien mientras el resto actúa.", chars: ["Lydia","Noa","Soledad"] },
-      { text: "Actuar directamente, sin esperar a que nadie te lo pida.", chars: ["Ethan","Saphire","Ayla"] },
+      { text: "Tomar las decisiones que nadie más quiere tomar.",
+        add: ["Luna","Estrella","Grace"], sub: ["Noa","Lucas"] },
+      { text: "Buscar el ángulo inesperado que los demás han ignorado.",
+        add: ["Xavier","Ona","Maven"], sub: ["Lydia","Soledad"] },
+      { text: "Sostener a alguien mientras el resto actúa.",
+        add: ["Lydia","Noa","Soledad"], sub: ["Luna","Xavier"] },
+      { text: "Actuar directamente, sin esperar a que nadie te lo pida.",
+        add: ["Ethan","Saphire","Ayla"], sub: ["Frey","Ryan"] },
     ]
   },
   {
     text: "Tu relación con la información que no debería salir del grupo...",
     options: [
-      { text: "La guardo. Siempre. Sin excepciones.", chars: ["Luna","Grace","Xavier"] },
-      { text: "La comparto solo con quien de verdad necesita saberla.", chars: ["Frey","Estrella","Ryan"] },
-      { text: "La uso para entender mejor lo que está pasando.", chars: ["Ayla","Maven","Noa"] },
-      { text: "La suelto si creo que cambia algo importante.", chars: ["Soledad","Leo","Dani"] },
+      { text: "La guardo. Siempre. Sin excepciones.",
+        add: ["Luna","Grace","Xavier"], sub: ["Soledad","Dani"] },
+      { text: "La comparto solo con quien de verdad necesita saberla.",
+        add: ["Frey","Estrella","Ryan"], sub: ["Ona","Soledad"] },
+      { text: "La uso para entender mejor lo que está pasando.",
+        add: ["Ayla","Maven","Noa"], sub: ["Luna","Xavier"] },
+      { text: "La suelto si creo que cambia algo importante.",
+        add: ["Soledad","Leo","Dani"], sub: ["Luna","Grace","Xavier"] },
     ]
   },
   {
     text: "En una reunión o fiesta donde no conoces a todo el mundo...",
     options: [
-      { text: "Termino siendo el centro del ambiente casi sin darme cuenta.", chars: ["Leo","Aurora","Ethan"] },
-      { text: "Me quedo en un rincón, observo y hablo cuando vale la pena.", chars: ["Frey","Xavier","Ryan"] },
-      { text: "Busco a quien parece más perdido y me quedo con esa persona.", chars: ["Lydia","Soledad","Noa"] },
-      { text: "Propongo plan alternativo antes de que acabe la noche.", chars: ["Saphire","Ona","Dani"] },
+      { text: "Termino siendo el centro del ambiente casi sin darme cuenta.",
+        add: ["Leo","Aurora","Ethan"], sub: ["Ryan","Frey","Noa"] },
+      { text: "Me quedo en un rincón, observo y hablo cuando vale la pena.",
+        add: ["Frey","Xavier","Ryan"], sub: ["Leo","Aurora","Ethan"] },
+      { text: "Busco a quien parece más perdido y me quedo con esa persona.",
+        add: ["Lydia","Soledad","Noa"], sub: ["Xavier","Ona"] },
+      { text: "Propongo plan alternativo antes de que acabe la noche.",
+        add: ["Saphire","Ona","Dani"], sub: ["Ryan","Noa"] },
     ]
   },
   {
     text: "Cuando una norma o decisión del grupo no te convence...",
     options: [
-      { text: "Lo digo. En voz alta, sin rodeos.", chars: ["Maven","Ethan","Soledad"] },
-      { text: "La sigo de momento, pero busco la manera de cambiarla por dentro.", chars: ["Saphire","Ryan","Dani"] },
-      { text: "La analizo antes de emitir juicio — puede tener sentido que aún no veo.", chars: ["Grace","Frey","Luna"] },
-      { text: "La ignoro y actúo según mi criterio.", chars: ["Ona","Xavier","Lucas"] },
+      { text: "Lo digo. En voz alta, sin rodeos.",
+        add: ["Maven","Ethan","Soledad"], sub: ["Saphire","Ryan","Lucas"] },
+      { text: "La sigo de momento, pero busco la manera de cambiarla por dentro.",
+        add: ["Saphire","Ryan","Dani"], sub: ["Maven","Ona"] },
+      { text: "La analizo antes de emitir juicio — puede tener sentido que aún no veo.",
+        add: ["Grace","Frey","Luna"], sub: ["Maven","Soledad"] },
+      { text: "La ignoro y actúo según mi criterio.",
+        add: ["Ona","Xavier","Lucas"], sub: ["Saphire","Ryan","Ethan"] },
     ]
   },
   {
     text: "Tu forma de procesar las emociones cuando algo te pesa...",
     options: [
-      { text: "Crear, escribir, dibujar — necesito que salga por algún lado.", chars: ["Soledad","Maven","Frey"] },
-      { text: "Moverme, hacer algo concreto. El cuerpo entiende lo que la cabeza no procesa.", chars: ["Ethan","Saphire","Ryan"] },
-      { text: "Hablar con alguien de confianza.", chars: ["Lydia","Leo","Ayla"] },
-      { text: "Guardarlo. Si lo digo, se vuelve más real.", chars: ["Luna","Xavier","Lucas"] },
+      { text: "Crear, escribir, dibujar — necesito que salga por algún lado.",
+        add: ["Soledad","Maven","Frey"], sub: ["Ethan","Ryan"] },
+      { text: "Moverme, hacer algo concreto. El cuerpo entiende lo que la cabeza no procesa.",
+        add: ["Ethan","Saphire","Ryan"], sub: ["Soledad","Frey"] },
+      { text: "Hablar con alguien de confianza.",
+        add: ["Lydia","Leo","Ayla"], sub: ["Luna","Xavier","Lucas"] },
+      { text: "Guardarlo. Si lo digo, se vuelve más real.",
+        add: ["Luna","Xavier","Lucas"], sub: ["Lydia","Leo","Ayla"] },
     ]
   },
   {
     text: "Lo que valoran más de ti quienes te conocen de verdad...",
     options: [
-      { text: "Tu lealtad. Sin condiciones, sin anuncios.", chars: ["Ethan","Noa","Soledad"] },
-      { text: "Tu inteligencia práctica — siempre encuentras la solución.", chars: ["Maven","Grace","Ayla"] },
-      { text: "Que haces reír incluso cuando todo va mal.", chars: ["Leo","Aurora","Dani"] },
-      { text: "Tu instinto para saber cuándo alguien lo necesita, antes de que lo pida.", chars: ["Lydia","Estrella","Frey"] },
+      { text: "Tu lealtad. Sin condiciones, sin anuncios.",
+        add: ["Ethan","Noa","Soledad"], sub: ["Ona","Xavier"] },
+      { text: "Tu inteligencia práctica — siempre encuentras la solución.",
+        add: ["Maven","Grace","Ayla"], sub: ["Leo","Aurora","Dani"] },
+      { text: "Que haces reír incluso cuando todo va mal.",
+        add: ["Leo","Aurora","Dani"], sub: ["Grace","Frey"] },
+      { text: "Tu instinto para saber cuándo alguien lo necesita, antes de que lo pida.",
+        add: ["Lydia","Estrella","Frey"], sub: ["Leo","Dani"] },
     ]
   },
   {
     text: "Si pudieras elegir tu papel en un grupo, serías...",
     options: [
-      { text: "El que planea y mantiene el orden desde dentro.", chars: ["Luna","Grace","Estrella"] },
-      { text: "El que ejecuta sin preguntas cuando confía en el plan.", chars: ["Ryan","Saphire","Lucas"] },
-      { text: "El que mantiene al grupo unido cuando se empieza a fracturar.", chars: ["Lydia","Soledad","Leo"] },
-      { text: "El que lleva la contraria cuando todos van en la misma dirección.", chars: ["Ona","Xavier","Maven"] },
+      { text: "El que planea y mantiene el orden desde dentro.",
+        add: ["Luna","Grace","Estrella"], sub: ["Ona","Dani"] },
+      { text: "El que ejecuta sin preguntas cuando confía en el plan.",
+        add: ["Ryan","Saphire","Lucas"], sub: ["Maven","Ona"] },
+      { text: "El que mantiene al grupo unido cuando se empieza a fracturar.",
+        add: ["Lydia","Soledad","Leo"], sub: ["Xavier","Ona"] },
+      { text: "El que lleva la contraria cuando todos van en la misma dirección.",
+        add: ["Ona","Xavier","Maven"], sub: ["Ryan","Saphire","Lucas"] },
+    ]
+  },
+  {
+    text: "Cuando alguien en quien confías está en peligro...",
+    options: [
+      { text: "Me lanzo sin pensarlo. El plan llega después.",
+        add: ["Ethan","Saphire","Lydia"], sub: ["Frey","Grace"] },
+      { text: "Calculo qué puedo hacer desde donde estoy, con lo que tengo.",
+        add: ["Ayla","Maven","Grace"], sub: ["Ethan"] },
+      { text: "Aviso al resto del grupo antes de moverme solo/a.",
+        add: ["Noa","Estrella","Frey"], sub: ["Ethan","Saphire"] },
+      { text: "Me quedo en mi posición y cumplo mi parte del plan para que salga.",
+        add: ["Ryan","Luna","Lucas"], sub: ["Lydia","Soledad"] },
+    ]
+  },
+  {
+    text: "Tu relación con la verdad y las mentiras...",
+    options: [
+      { text: "No miento. Prefiero callar antes que decir algo falso.",
+        add: ["Ethan","Ayla","Noa"], sub: ["Ona","Aurora","Luna"] },
+      { text: "Miento si protege a alguien que quiero.",
+        add: ["Luna","Soledad","Frey"], sub: ["Ethan","Maven"] },
+      { text: "La verdad es una herramienta más. Depende de para qué la necesites.",
+        add: ["Xavier","Ona","Aurora"], sub: ["Ethan","Noa"] },
+      { text: "Adapto la versión según quién pregunta. No es mentira, es contexto.",
+        add: ["Maven","Dani","Lucas"], sub: ["Ethan","Ayla"] },
     ]
   },
 ];
 
 const characters = {
-  Soledad: {
-    name: "Soledad Ramírez",
-    power: "Tinta del Destino",
-    emoji: "🖋️",
-    desc: [
-      "Por fuera puedes parecer fría o distante, pero quienes te conocen de verdad saben que eres de las más leales que existen. Tienes una sensibilidad enorme que proteges con capa tras capa — el arte, la escritura, las manos ocupadas son tu forma de ordenar el caos interno.",
-      "Tu mayor fortaleza es la observación. Tu mayor carga: guardarlo todo, y cargar con culpas que muchas veces no son solo tuyas."
-    ]
-  },
-  Ayla: {
-    name: "Ayla Solberg",
-    power: "Maestra del Tiempo",
-    emoji: "📷",
-    desc: [
-      "Tienes la mirada de alguien que analiza antes de actuar. Elegante sin proponértelo, precisa sin ser fría. Llevas una cámara mental que nunca para de grabar: detalles, patrones, cosas que los demás dejan escapar.",
-      "Cuando algo te importa, lo defiendes con una firmeza que sorprende a quien no te conoce. Y cuando alguien necesita que alguien salte, eres tú quien salta primero — aunque hayas detenido el tiempo para hacerlo."
-    ]
-  },
-  Maven: {
-    name: "Maven",
-    power: "Tecnología Anómala",
-    emoji: "🎵",
-    desc: [
-      "Usas la ironía como escudo y como herramienta, según el momento. Práctica hasta el extremo: analizas, documentas, actúas — incluso en plena huida. Tu sentido del humor funciona como mecanismo de supervivencia.",
-      "Pero debajo de la sarcasmo hay alguien que se preocupa profundamente y que no necesita anunciarlo para demostrarlo."
-    ]
-  },
-  Ethan: {
-    name: "Ethan",
-    power: "Escudo de Diamante",
-    emoji: "🛡️",
-    desc: [
-      "Llevas el liderazgo de forma natural, aunque a veces te pese. Eres de los que se ponen delante cuando hay peligro — directo, protector, con un punto de brusquedad que viene de no tener tiempo para rodeos.",
-      "Tu fidelidad a quienes consideras tuyos es absoluta. Ni de coña dejas a nadie atrás — y lo demuestras con acciones, no con palabras."
-    ]
-  },
-  Ryan: {
-    name: "Ryan",
-    power: "Humo Tóxico",
-    emoji: "🌫️",
-    desc: [
-      "Eres de pocas palabras y muchas capas. La gente no suele saber qué estás pensando, y en parte eso es intencional. Cargas con un pasado que prefieres no abrir delante de nadie y siempre estás donde se te necesita, aunque nadie te lo haya pedido.",
-      "Tu lealtad no se anuncia: se demuestra con acciones discretas y constantes. Eres más de proteger en silencio que de destacar en voz alta."
-    ]
-  },
-  Luna: {
-    name: "Luna Ramírez",
-    power: "Modificación de Recuerdos",
-    emoji: "🌙",
-    desc: [
-      "Proyectas autoridad y control. Sabes tomar decisiones difíciles aunque duelan, porque entiendes que la organización importa más que el confort. Por fuera, frialdad calculada. Por dentro, más de lo que nadie imagina.",
-      "Amas con intensidad a quienes son tuyos, pero lo proteges detrás de una distancia estratégica. Tu mayor conflicto: que proteger y controlar a veces se confunden."
-    ]
-  },
-  Frey: {
-    name: "Frey",
-    power: "Portales Dimensionales",
-    emoji: "🌀",
-    desc: [
-      "Llevas a las espaldas una historia que no le cuentas a nadie entero. Pesimista funcional: siempre tienes preparada la retirada, siempre has estudiado el terreno antes de que nadie lo pida.",
-      "Tienes la habilidad de aparecer justo cuando alguien te necesita. Y la de desaparecer cuando crees que sobras — aunque no sea verdad."
-    ]
-  },
-  Lydia: {
-    name: "Lydia",
-    power: "Guardiana — Curación y Transferencia",
-    emoji: "🌿",
-    desc: [
-      "Cuando alguien está mal, tú ya estás ahí. No esperas a que te pidan ayuda. Tu instinto protector es feroz y no admite negociación: sostienes la vida de otra persona durante horas a costa de la tuya propia sin reparar en el coste.",
-      "Tu mayor reto es aprender dónde terminas tú y dónde empieza la responsabilidad de otros."
-    ]
-  },
-  Estrella: {
-    name: "Estrella",
-    power: "Gravedad — Co-líder de Astraea",
-    emoji: "⭐",
-    desc: [
-      "Llevas tiempo en esto. El suficiente para saber que la calma no es debilidad, sino la herramienta más poderosa que existe. Eres de las que ven el todo antes de actuar, y cuando actúas, lo haces con una precisión que no deja margen al error.",
-      "Has protegido a personas sin que supieran que lo hacías. Y sigues siendo el ancla de equilibrio para quienes te rodean — incluso cuando tú misma estás cargando con demasiado."
-    ]
-  },
-  Leo: {
-    name: "Leo",
-    power: "Probabilidades",
-    emoji: "🎲",
-    desc: [
-      "Tienes una energía natural que hace que la gente quiera estar cerca de ti, aunque no sepan exactamente por qué. Pícaro, extrovertido, con ese punto de imprevisibilidad que convierte cada conversación en algo más interesante.",
-      "Pero debajo del encanto hay una mente que siempre está calculando. El mundo te funciona mejor cuando ya has visto los posibles resultados antes de tirarte al vacío."
-    ]
-  },
-  Grace: {
-    name: "Grace",
-    power: "Visión de Frecuencias",
-    emoji: "👁️",
-    desc: [
-      "Líder del departamento de inteligencia de Astraea: organizada, al mando, capaz de auto-cuestionarte cuando algo sale mal. Hay capas en ti que muy poca gente ha visto. Por fuera: competente, ágil, al control.",
-      "Tu poder es ver lo que los demás no pueden. Pero a veces lo más difícil es ver lo que tienes delante y decidir qué hacer con ello — especialmente cuando implica a quienes quieres."
-    ]
-  },
-  Noa: {
-    name: "Noa",
-    power: "Percepción Dimensional",
-    emoji: "🔴",
-    desc: [
-      "Percibes cosas de otros mundos que el resto no puede ver, oler ni escuchar — eso te ha hecho diferente desde siempre, y diferente no siempre fue sinónimo de bienvenido.",
-      "Pero confías en quien se lo ha ganado, y cuando lo haces, lo haces del todo. En los momentos límite, tu ayuda resulta ser la más decisiva de todas."
-    ]
-  },
-  Ona: {
-    name: "Ona",
-    power: "Cambiaformas y Telequinesis",
-    emoji: "🦋",
-    desc: [
-      "Fascinante e impredecible, y lo sabes. Puedes ser cualquiera que necesites ser, literal y figuradamente. Tu inteligencia es aguda y tu sentido del juego convierte las situaciones de tensión en algo casi divertido para ti.",
-      "No eres la villana de la historia, pero tampoco te esfuerzas en que nadie lo olvide. El caos controlado es tu terreno natural."
-    ]
-  },
-  Saphire: {
-    name: "Saphire",
-    power: "Voz Sónica",
-    emoji: "🎙️",
-    desc: [
-      "Tu voz tiene un peso que la mayoría no entiende hasta que es demasiado tarde. Por fuera eres cercana, casi juguetona — la misma persona que propone hacer urbex a medianoche y la que se queda cubriendo la retirada sin decir ni media queja.",
-      "Obedeces la jerarquía no porque te falte criterio, sino porque has aprendido que algunas batallas no se ganan de frente. Cuando hay que actuar, sin embargo, actúas antes que nadie."
-    ]
-  },
-  Xavier: {
-    name: "Xavier",
-    power: "Poder no revelado — Líder de Crimson",
-    emoji: "♠️",
-    desc: [
-      "Tienes una forma de entrar en una habitación que hace que todos se pregunten de qué lado estás. La respuesta, casi siempre, es del tuyo. Encantador, teatral en los márgenes, pero tremendamente observador cuando algo te importa.",
-      "Lideras Crimson desde la distancia estratégica y el calor selectivo. No eres el enemigo, pero tampoco te esfuerzas en que nadie lo descarte del todo."
-    ]
-  },
-  Aurora: {
-    name: "Aurora",
-    power: "Feromonas",
-    emoji: "🌸",
-    desc: [
-      "Tienes un encanto que la mayoría nota antes de poder explicar por qué. Teatral y afilado a partes iguales, sabes exactamente qué efecto produces en los demás — y eso te da una ventaja que no siempre usas bien.",
-      "La línea entre seducir y controlar es más fina de lo que reconoces. Tu mayor reto no es el mundo exterior: es aprender a distinguir cuándo actúas desde el deseo real y cuándo desde el miedo a perder."
-    ]
-  },
-  Dani: {
-    name: "Dani",
-    power: "Poder no revelado",
-    emoji: "🃏",
-    desc: [
-      "Tienes una capacidad natural para adaptarte a lo que el momento pide. No haces mucho ruido, pero siempre estás donde hace falta — y cuando el ambiente se complica, sabes mantener la cabeza fría sin perder el hilo.",
-      "Cargas con malentendidos del pasado que nunca tuviste la oportunidad de aclarar del todo. Lo que otros percibieron como traición fue a menudo circunstancia — y eso te ha enseñado que la versión que llega a los demás raramente es la completa."
-    ]
-  },
-  Lucas: {
-    name: "Lucas",
-    power: "Poder no revelado",
-    emoji: "☕",
-    desc: [
-      "A primera vista eres la persona más accesible del grupo: cordial, curioso, sin aristas visibles. Te presentas con facilidad, preguntas qué estudia la gente, te integras sin esfuerzo aparente.",
-      "Pero hay capas que todavía nadie ha visto del todo. Lo que parece transparencia podría ser otra forma de pasar desapercibido — y lo que ocurre a tu alrededor cuando nadie presta demasiada atención es, curiosamente, más de lo que parece."
-    ]
-  },
+  Soledad: { name:"Soledad Ramírez", power:"Tinta del Destino", emoji:"🖋️", desc:["Por fuera puedes parecer fría o distante, pero quienes te conocen de verdad saben que eres de las más leales que existen. Tienes una sensibilidad enorme que proteges con capa tras capa — el arte, la escritura, las manos ocupadas son tu forma de ordenar el caos interno.","Tu mayor fortaleza es la observación. Tu mayor carga: guardarlo todo, y cargar con culpas que muchas veces no son solo tuyas."] },
+  Ayla: { name:"Ayla Solberg", power:"Maestra del Tiempo", emoji:"📷", desc:["Tienes la mirada de alguien que analiza antes de actuar. Elegante sin proponértelo, precisa sin ser fría. Llevas una cámara mental que nunca para de grabar: detalles, patrones, cosas que los demás dejan escapar.","Cuando algo te importa, lo defiendes con una firmeza que sorprende a quien no te conoce. Y cuando alguien necesita que alguien salte, eres tú quien salta primero — aunque hayas detenido el tiempo para hacerlo."] },
+  Maven: { name:"Maven", power:"Tecnología Anómala", emoji:"🎵", desc:["Usas la ironía como escudo y como herramienta, según el momento. Práctica hasta el extremo: analizas, documentas, actúas — incluso en plena huida.","Debajo del sarcasmo hay alguien que se preocupa profundamente y que no necesita anunciarlo para demostrarlo."] },
+  Ethan: { name:"Ethan", power:"Escudo de Diamante", emoji:"🛡️", desc:["Llevas el liderazgo de forma natural, aunque a veces te pese. Eres de los que se ponen delante cuando hay peligro — directo, protector, con un punto de brusquedad que viene de no tener tiempo para rodeos.","Tu fidelidad a quienes consideras tuyos es absoluta. Ni de coña dejas a nadie atrás."] },
+  Ryan: { name:"Ryan", power:"Humo Tóxico", emoji:"🌫️", desc:["Eres de pocas palabras y muchas capas. La gente no suele saber qué estás pensando, y en parte eso es intencional. Siempre estás donde se te necesita, aunque nadie te lo haya pedido.","Tu lealtad no se anuncia: se demuestra con acciones discretas y constantes. Eres más de proteger en silencio que de destacar en voz alta."] },
+  Luna: { name:"Luna Ramírez", power:"Modificación de Recuerdos", emoji:"🌙", desc:["Proyectas autoridad y control. Sabes tomar decisiones difíciles aunque duelan, porque entiendes que la organización importa más que el confort. Por fuera, frialdad calculada. Por dentro, más de lo que nadie imagina.","Amas con intensidad a quienes son tuyos, pero lo proteges detrás de una distancia estratégica. Tu mayor conflicto: que proteger y controlar a veces se confunden."] },
+  Frey: { name:"Frey", power:"Portales Dimensionales", emoji:"🌀", desc:["Llevas a las espaldas una historia que no le cuentas a nadie entero. Pesimista funcional: siempre tienes preparada la retirada, siempre has estudiado el terreno antes de que nadie lo pida.","Tienes la habilidad de aparecer justo cuando alguien te necesita. Y la de desaparecer cuando crees que sobras, aunque no sea verdad."] },
+  Lydia: { name:"Lydia", power:"Guardiana — Curación y Transferencia", emoji:"🌿", desc:["Cuando alguien está mal, tú ya estás ahí. No esperas a que te pidan ayuda. Tu instinto protector es feroz y no admite negociación: sostienes la vida de otra persona durante horas a costa de la tuya propia sin reparar en el coste.","Tu mayor reto es aprender dónde terminas tú y dónde empieza la responsabilidad de otros."] },
+  Estrella: { name:"Estrella", power:"Gravedad — Co-líder de Astraea", emoji:"⭐", desc:["Llevas tiempo en esto. El suficiente para saber que la calma no es debilidad, sino la herramienta más poderosa que existe. Eres de las que ven el todo antes de actuar, y cuando actúas, lo haces con una precisión que no deja margen al error.","Has protegido a personas sin que supieran que lo hacías. Y sigues siendo el ancla de equilibrio para quienes te rodean."] },
+  Leo: { name:"Leo", power:"Probabilidades", emoji:"🎲", desc:["Tienes una energía natural que hace que la gente quiera estar cerca de ti, aunque no sepan exactamente por qué. Pícaro, extrovertido, con ese punto de imprevisibilidad que convierte cada conversación en algo más interesante.","Pero debajo del encanto hay una mente que siempre está calculando. El mundo te funciona mejor cuando ya has visto los posibles resultados antes de tirarte al vacío."] },
+  Grace: { name:"Grace", power:"Visión de Frecuencias", emoji:"👁️", desc:["Líder del departamento de inteligencia de Astraea: organizada, al mando, capaz de auto-cuestionarte cuando algo sale mal. Hay capas en ti que muy poca gente ha visto.","Tu poder es ver lo que los demás no pueden. Pero a veces lo más difícil es ver lo que tienes delante y decidir qué hacer con ello."] },
+  Noa: { name:"Noa", power:"Percepción Dimensional", emoji:"🔴", desc:["Percibes cosas de otros mundos que el resto no puede ver, oler ni escuchar — eso te ha hecho diferente desde siempre, y diferente no siempre fue sinónimo de bienvenido.","Pero confías en quien se lo ha ganado, y cuando lo haces, lo haces del todo. En los momentos límite, tu ayuda resulta ser la más decisiva de todas."] },
+  Ona: { name:"Ona", power:"Cambiaformas y Telequinesis", emoji:"🦋", desc:["Fascinante e impredecible, y lo sabes. Puedes ser cualquiera que necesites ser, literal y figuradamente. Tu inteligencia es aguda y tu sentido del juego convierte las situaciones de tensión en algo casi divertido para ti.","No eres la villana de la historia, pero tampoco te esfuerzas en que nadie lo olvide. El caos controlado es tu terreno natural."] },
+  Saphire: { name:"Saphire", power:"Voz Sónica", emoji:"🎙️", desc:["Tu voz tiene un peso que la mayoría no entiende hasta que es demasiado tarde. Por fuera eres cercana, casi juguetona — la misma persona que propone hacer urbex a medianoche y la que se queda cubriendo la retirada sin decir ni media queja.","Obedeces la jerarquía no porque te falte criterio, sino porque has aprendido que algunas batallas no se ganan de frente. Cuando hay que actuar, actúas antes que nadie."] },
+  Xavier: { name:"Xavier", power:"Poder no revelado — Líder de Crimson", emoji:"♠️", desc:["Tienes una forma de entrar en una habitación que hace que todos se pregunten de qué lado estás. La respuesta, casi siempre, es del tuyo. Encantador, teatral en los márgenes, pero tremendamente observador cuando algo te importa.","Lideras Crimson desde la distancia estratégica y el calor selectivo. No eres el enemigo, pero tampoco te esfuerzas en que nadie lo descarte del todo."] },
+  Aurora: { name:"Aurora", power:"Feromonas", emoji:"🌸", desc:["Tienes un encanto que la mayoría nota antes de poder explicar por qué. Teatral y afilado a partes iguales, sabes exactamente qué efecto produces en los demás — y eso te da una ventaja que no siempre usas bien.","La línea entre seducir y controlar es más fina de lo que reconoces. Tu mayor reto es aprender a distinguir cuándo actúas desde el deseo real y cuándo desde el miedo a perder."] },
+  Dani: { name:"Dani", power:"Poder no revelado", emoji:"🃏", desc:["Tienes una capacidad natural para adaptarte a lo que el momento pide. No haces mucho ruido, pero siempre estás donde hace falta — y cuando el ambiente se complica, sabes mantener la cabeza fría sin perder el hilo.","Cargas con malentendidos del pasado que nunca tuviste la oportunidad de aclarar del todo. Lo que otros percibieron como traición fue a menudo circunstancia."] },
+  Lucas: { name:"Lucas", power:"Poder no revelado", emoji:"☕", desc:["A primera vista eres la persona más accesible del grupo: cordial, curioso, sin aristas visibles. Te presentas con facilidad, preguntas qué estudia la gente, te integras sin esfuerzo aparente.","Pero hay capas que todavía nadie ha visto del todo. Lo que parece transparencia podría ser otra forma de pasar desapercibido."] },
 };
+
+const maxPossible = {};
+Object.keys(characters).forEach(k => maxPossible[k] = 0);
+questions.forEach(q => q.options.forEach(o => {
+  (o.add || []).forEach(c => { if (maxPossible[c] !== undefined) maxPossible[c]++; });
+}));
 
 let current = 0;
 const scores = {};
 Object.keys(characters).forEach(k => scores[k] = 0);
 
+function affinityLabel(pct) {
+  if (pct >= 75) return "Alma gemela ✨";
+  if (pct >= 55) return "Mejor amigo/a";
+  if (pct >= 40) return "Compañero/a de misión";
+  if (pct >= 25) return "Aliado/a de Astraea";
+  if (pct >= 10) return "Conocido/a de la residencia";
+  if (pct >= 1)  return "Nos conocemos de vista";
+  if (pct === 0) return "Casi desconocido/a";
+  if (pct >= -20) return "Energías que chocan";
+  return "Lados opuestos del tablero";
+}
+
 function renderQuestion() {
   const q = questions[current];
   const pct = Math.round((current / questions.length) * 100);
-  document.getElementById('progressLabel').textContent = `Pregunta ${current + 1} de ${questions.length}`;
+  document.getElementById('progressLabel').textContent = 'Pregunta ' + (current + 1) + ' de ' + questions.length;
   document.getElementById('progressPct').textContent = pct + '%';
   document.getElementById('progressFill').style.width = pct + '%';
 
   const area = document.getElementById('quizArea');
   const card = document.createElement('div');
   card.className = 'card';
-  card.innerHTML = `
-    <div class="q-number">— ${String(current + 1).padStart(2,'0')} / ${questions.length}</div>
-    <div class="q-text">${q.text}</div>
-    <div class="options"></div>
-  `;
-  const opts = card.querySelector('.options');
-  q.options.forEach((o, i) => {
+  const qNum = document.createElement('div'); qNum.className = 'q-number';
+  qNum.textContent = '— ' + String(current + 1).padStart(2,'0') + ' / ' + questions.length;
+  const qText = document.createElement('div'); qText.className = 'q-text';
+  qText.textContent = q.text;
+  const opts = document.createElement('div'); opts.className = 'options';
+  q.options.forEach(o => {
     const btn = document.createElement('button');
     btn.className = 'option';
     btn.textContent = o.text;
     btn.onclick = () => pick(o, btn, opts);
     opts.appendChild(btn);
   });
+  card.appendChild(qNum); card.appendChild(qText); card.appendChild(opts);
   area.innerHTML = '';
   area.appendChild(card);
   document.getElementById('progressWrap').style.display = '';
@@ -681,7 +635,8 @@ function renderQuestion() {
 function pick(option, btn, opts) {
   opts.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
-  option.chars.forEach(c => { if (scores[c] !== undefined) scores[c]++; });
+  (option.add || []).forEach(c => { if (scores[c] !== undefined) scores[c]++; });
+  (option.sub || []).forEach(c => { if (scores[c] !== undefined) scores[c]--; });
   setTimeout(() => {
     current++;
     if (current < questions.length) renderQuestion();
@@ -699,79 +654,89 @@ function showResult() {
   const el = document.createElement('div');
   el.className = 'result-card';
 
-  const imgHtml = imgSrc
-    ? `<img src="${imgSrc}" alt="${ch.name}">`
-    : `<span class="emoji-ph">${ch.emoji}</span>`;
+  const imgWrap = document.createElement('div'); imgWrap.className = 'result-img-wrap';
+  if (imgSrc) { const img = document.createElement('img'); img.src = imgSrc; img.alt = ch.name; imgWrap.appendChild(img); }
+  else { const ph = document.createElement('span'); ph.className = 'emoji-ph'; ph.textContent = ch.emoji; imgWrap.appendChild(ph); }
 
-  el.innerHTML = `
-    <span class="result-eyebrow">Tu personaje es</span>
-    <div class="result-img-wrap">${imgHtml}</div>
-    <div class="result-meta">
-      <div class="result-power">${ch.power}</div>
-      <div class="result-name">${ch.name}</div>
-      <div class="result-desc">${ch.desc.map(p=>`<p>${p}</p>`).join('')}</div>
-      <div class="btn-row">
-        <button class="btn primary" id="btnAff">Ver afinidad con todos &rarr;</button>
-        <button class="btn" id="btnRetry">Volver a empezar</button>
-      </div>
-    </div>
-  `;
+  const eyebrow = document.createElement('span'); eyebrow.className = 'result-eyebrow'; eyebrow.textContent = 'Tu personaje es';
+  const meta = document.createElement('div'); meta.className = 'result-meta';
+  const power = document.createElement('div'); power.className = 'result-power'; power.textContent = ch.power;
+  const name = document.createElement('div'); name.className = 'result-name'; name.textContent = ch.name;
+  const desc = document.createElement('div'); desc.className = 'result-desc';
+  ch.desc.forEach(p => { const para = document.createElement('p'); para.textContent = p; desc.appendChild(para); });
+  const btnRow = document.createElement('div'); btnRow.className = 'btn-row';
+  const btnAff = document.createElement('button'); btnAff.className = 'btn primary';
+  btnAff.textContent = 'Ver afinidad con todos →';
+  btnAff.onclick = () => showAffinity(winner);
+  const btnRetry = document.createElement('button'); btnRetry.className = 'btn';
+  btnRetry.textContent = 'Volver a empezar';
+  btnRetry.onclick = restart;
+  btnRow.appendChild(btnAff); btnRow.appendChild(btnRetry);
+  meta.appendChild(power); meta.appendChild(name); meta.appendChild(desc); meta.appendChild(btnRow);
+  el.appendChild(eyebrow); el.appendChild(imgWrap); el.appendChild(meta);
   area.innerHTML = '';
   area.appendChild(el);
-  document.getElementById('btnAff').onclick = () => showAffinity(winner);
-  document.getElementById('btnRetry').onclick = restart;
 }
 
 function showAffinity(winner) {
-  const total = Object.values(scores).reduce((a,b)=>a+b,0) || 1;
-  const sorted = Object.keys(scores).sort((a,b)=>scores[b]-scores[a]);
-
+  const sorted = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
   const area = document.getElementById('quizArea');
-  const el = document.createElement('div');
-  el.className = 'affinity-screen';
-  el.innerHTML = `
-    <div class="affinity-header">
-      <span class="affinity-eyebrow">Afinidad completa</span>
-      <div class="affinity-title">Tu conexión con cada personaje</div>
-    </div>
-    <div class="affinity-grid" id="affGrid"></div>
-    <button class="btn" style="width:100%;justify-content:center" id="btnRetry2">Volver a empezar</button>
-  `;
-  area.innerHTML = '';
-  area.appendChild(el);
-  document.getElementById('btnRetry2').onclick = restart;
+  const el = document.createElement('div'); el.className = 'affinity-screen';
 
-  const grid = document.getElementById('affGrid');
+  const header = document.createElement('div'); header.className = 'affinity-header';
+  const eyebrow = document.createElement('span'); eyebrow.className = 'affinity-eyebrow'; eyebrow.textContent = 'Afinidad completa';
+  const title = document.createElement('div'); title.className = 'affinity-title'; title.textContent = 'Tu conexión con cada personaje';
+  header.appendChild(eyebrow); header.appendChild(title);
+
+  const grid = document.createElement('div'); grid.className = 'affinity-grid';
+
   sorted.forEach(key => {
     const ch = characters[key];
-    const pct = Math.round((scores[key] / total) * 100);
-    const imgSrc = window.__edel_images && window.__edel_images[key];
+    const mp = maxPossible[key] || 1;
+    const pct = Math.round((scores[key] / mp) * 100);
+    const label = affinityLabel(pct);
     const isWinner = key === winner;
+    const isNeg = pct < 0;
+    const barW = Math.max(0, Math.min(100, pct));
+    const imgSrc = window.__edel_images && window.__edel_images[key];
 
     const card = document.createElement('div');
-    card.className = 'aff-card' + (isWinner ? ' winner' : '');
+    card.className = 'aff-card' + (isWinner ? ' winner' : '') + (isNeg ? ' negative' : '');
 
-    const imgHtml = imgSrc
-      ? `<img src="${imgSrc}" alt="${ch.name}">`
-      : `<div class="aff-emoji-ph">${ch.emoji}</div>`;
+    if (isWinner) {
+      const badge = document.createElement('div'); badge.className = 'winner-badge';
+      badge.textContent = 'Tu resultado'; card.appendChild(badge);
+    }
 
-    card.innerHTML = `
-      ${isWinner ? '<div class="winner-badge">Tu resultado</div>' : ''}
-      <div class="aff-img">${imgHtml}</div>
-      <div class="aff-body">
-        <div class="aff-pct">${pct}%</div>
-        <div class="aff-name">${ch.name}</div>
-        <div class="aff-power">${ch.power}</div>
-        <div class="aff-bar-wrap"><div class="aff-bar" data-pct="${pct}"></div></div>
-      </div>
-    `;
+    const imgDiv = document.createElement('div'); imgDiv.className = 'aff-img';
+    if (imgSrc) { const img = document.createElement('img'); img.src = imgSrc; img.alt = ch.name; imgDiv.appendChild(img); }
+    else { const ph = document.createElement('div'); ph.className = 'aff-emoji-ph'; ph.textContent = ch.emoji; imgDiv.appendChild(ph); }
+
+    const body = document.createElement('div'); body.className = 'aff-body';
+    const pctEl = document.createElement('div'); pctEl.className = 'aff-pct' + (isNeg ? ' aff-pct-neg' : '');
+    pctEl.textContent = pct + '%';
+    const labelEl = document.createElement('div'); labelEl.className = 'aff-label'; labelEl.textContent = label;
+    const nameEl = document.createElement('div'); nameEl.className = 'aff-name'; nameEl.textContent = ch.name;
+    const powerEl = document.createElement('div'); powerEl.className = 'aff-power'; powerEl.textContent = ch.power;
+    const barWrap = document.createElement('div'); barWrap.className = 'aff-bar-wrap';
+    const bar = document.createElement('div'); bar.className = 'aff-bar' + (isNeg ? ' aff-bar-neg' : '');
+    bar.dataset.w = barW; bar.style.width = '0%';
+    barWrap.appendChild(bar);
+    body.appendChild(pctEl); body.appendChild(labelEl); body.appendChild(nameEl); body.appendChild(powerEl); body.appendChild(barWrap);
+    card.appendChild(imgDiv); card.appendChild(body);
     grid.appendChild(card);
   });
 
+  const retryBtn = document.createElement('button'); retryBtn.className = 'btn';
+  retryBtn.style.cssText = 'width:100%;justify-content:center;margin-top:1rem';
+  retryBtn.textContent = 'Volver a empezar'; retryBtn.onclick = restart;
+
+  el.appendChild(header); el.appendChild(grid); el.appendChild(retryBtn);
+  area.innerHTML = '';
+  area.appendChild(el);
+
   requestAnimationFrame(() => requestAnimationFrame(() => {
-    grid.querySelectorAll('.aff-bar').forEach(bar => {
-      bar.style.width = bar.dataset.pct + '%';
-    });
+    grid.querySelectorAll('.aff-bar').forEach(bar => { bar.style.width = bar.dataset.w + '%'; });
   }));
 }
 
